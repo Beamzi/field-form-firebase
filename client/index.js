@@ -1,5 +1,4 @@
-//import { initializeApp } from "firebase/app";
-//import { getAnalytics } from "firebase/analytics";
+
 
 
 const firebaseConfig = {
@@ -20,8 +19,9 @@ const firebaseConfig = {
   
   };
 
-  //const app = initializeApp(firebaseConfig);
-  //const analytics = getAnalytics(app);
+    const app = firebase.initializeApp(firebaseConfig);
+    const analytics = firebase.analytics();
+
 
 
 object = {}
@@ -57,14 +57,55 @@ const fieldGen = () => {
 fieldGen();
 
 
+
 //stores input data in 'datainput' on button click, labels 
+
 object.submit.addEventListener('click', () => {
+    event.preventDefault();
+    let dataInputJSON
     let array = ['First Name', 'Last Name', 'Age', 'Address', 'job Description']
     for (let i = 0; i < array.length; i++) {
         dataInput[`${array[i]}`] = nodeRefs[`input${i}`].value
     };
+
+    dataInputJSON = JSON.stringify(dataInput);
+    console.log(dataInputJSON);
+
+
+    // Call your cloud function here and pass dataInputJSON
+    // Replace 'your-cloud-function-url' with your actual cloud function URL
+    
+    fetch('http://localhost:5001/field-form-generator/sendJsonToEmail', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: dataInputJSON
+    })
+
+    .then(response => {
+        if (response.ok) {
+            console.log('Data sent successfully!');
+        } else {
+            console.error('Failed to send data');
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    });
+
+
+    analytics.logEvent('submit_form', {
+        // Include any relevant parameters or data
+        form_data: dataInput    
+    });
+    
+
+
+
     console.log(dataInput)
 });
+
 
 
 console.log(nodeRefs)
