@@ -1,27 +1,18 @@
 
-
-
 const firebaseConfig = {
 
     apiKey: "AIzaSyCdVNrmJIJ1__FZA9-1H50ZmXiwqD7whH4",
-  
     authDomain: "field-form-generator.firebaseapp.com",
-  
     projectId: "field-form-generator",
-  
     storageBucket: "field-form-generator.appspot.com",
-  
     messagingSenderId: "480037229115",
-  
     appId: "1:480037229115:web:ce161b15b19a309018021e",
-  
     measurementId: "G-SRDXVVY0P8"
   
   };
 
     const app = firebase.initializeApp(firebaseConfig);
     const analytics = firebase.analytics();
-
 
 
 object = {}
@@ -74,8 +65,18 @@ object.submit.addEventListener('click', () => {
 
     // Call your cloud function here and pass dataInputJSON
     // Replace 'your-cloud-function-url' with your actual cloud function URL
+    // Determine the correct URL based on the environment
+
+    /*
+  const isLocal = location.hostname === "localhost";
+  const cloudFunctionURL = isLocal 
+    ? 'http://localhost:5001/field-form-generator/sendJsonToEmail'
+    : 'https://us-central1-field-form-generator.cloudfunctions.net/sendJsonToEmail';
+    */
+
+    //http://localhost:5001/field-form-generator/sendJsonToEmail
     
-    fetch('http://localhost:5001/field-form-generator/sendJsonToEmail', {
+    fetch('http://127.0.0.1:5001/field-form-generator/us-central1/sendJsonToEmail', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
